@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ping</title>
+</head>
+<body>
+    <div id="dashboard"></div>
+    <div style="margin-top: 5em;">
+        <label for="command">URL/IP:</label>
+        <input type="text" id="command" />
+        <button id="send" type="button">Executar</button>
+        
+    </div>    
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        window.onload=()=>{
+            const socket=io('http://localhost:3000');
+            const dash=document.getElementById('dashboard');
+            const button=document.getElementById('send');
+           
+            const command=document.getElementById('command');
+
+            socket.on('output',(data)=>{
+                let p=document.createElement('p');
+                p.innerHTML=data;
+
+                dash.appendChild(p);
+            });
+
+            button.addEventListener('click',()=>{
+                socket.emit('command',command.value);
+            });
+           
+        
+    }
+    </script>
+</body>
+</html>
